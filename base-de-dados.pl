@@ -20,15 +20,7 @@ total_compras(X, Res) :- findall(Val, gasto(_,_,X,_,_,_,Val), Valores), somaList
 
 %Sexta regra ----- NAO EXISTE
 
-gasto('11-03-2022','tijolo','joao',10.0,'unidade',25.0,840.0).
-gasto('10-01-2021','cimento','jose',50.0,'saco',24.0,650.0).
-gasto('20-05-2020','tijolo','joao',25.0,'unidade',22.0,560.0).
-gasto('11-03-2022','tijolo','joao',10.0,'unidade',25.0,840.0).
-gasto('10-01-2021','cimento','jose',50.0,'saco',24.0,650.0).
-gasto('20-05-2020','tijolo','joao',25.0,'unidade',22.0,560.0).
-gasto('11-03-2022','tijolo','joao',10.0,'unidade',25.0,840.0).
-gasto('10-01-2021','cimento','jose',50.0,'saco',24.0,650.0).
-gasto('20-05-2020','tijolo','joao',25.0,'unidade',22.0,560.0).
+
 gasto('11-03-2022','tijolo','joao',10.0,'unidade',25.0,840.0).
 gasto('10-01-2021','cimento','jose',50.0,'saco',24.0,650.0).
 gasto('20-05-2020','tijolo','joao',25.0,'unidade',22.0,560.0).
