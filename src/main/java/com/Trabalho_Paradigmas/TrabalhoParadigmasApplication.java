@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jpl7.PrologException;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,38 +18,59 @@ import java.util.*;
 public class TrabalhoParadigmasApplication {
 
 	public static void main(String[] args) throws IOException {
+		String arquivoEscrita = "base-de-dados.pl";
 		Scanner ler = new Scanner(System.in);
 
-		System.out.println("Escolha o arquivo ou digite 0 caso não faça o upload dos dados:");
+		System.out.println("Escolha o arquivo ou digite 0 para pular o Upload dos dados:");
 		String arquivoLeitura = ler.next();
 		if(!arquivoLeitura.equals("0")){
 			List<String> linhas = lerArquivo(arquivoLeitura);
-			escreverArquivo(linhas);
+			escreverArquivo(linhas, arquivoEscrita);
 		}
-		while (true){
-			System.out.println("Digite a consulta:");
-			String consulta = ler.next();
-			consultar(consulta);
+		String consulta = "1";
+		while (!consulta.equals("0")){
+			System.out.println("Exemplos dos tipos de consulta:");
+			System.out.println("1 - Produto X foi comprado: \n - compramos(‘tijolo’).");
+			System.out.println("2 - Quantidade comprada de um produto: \n - quantidade('tijolo', Variavel)");
+			System.out.println("3 - Valor total comprado de um produto: X \n - valor_total('tijolo',Variavel)");
+			System.out.println("4 - O que foi comprado na data X: \n - comprado_em('13-05-2022',Variavel)");
+			System.out.println("5 - Total comprado na loja X: \n - total_compras('loja',Variavel)");
+			System.out.println("6 - Qual o produto mais comprado: \n - produto_mais_comprado(Variavel).");
+
+			System.out.println();
+			System.out.println("Digite a consulta baseado nos exemplos ou digite 0 para sair");
+			consulta = ler.next();
+
+			if (!consulta.equals("0")) {
+				try {
+					consultar(consulta, arquivoEscrita);
+				} catch (PrologException e) {
+					System.out.println("Consulta incorreta! Tente novamente. " + e.getMessage());
+					System.out.println();
+				}
+			}
 		}
 	}
 
-	private static void escreverArquivo(List<String> linhas) throws IOException {
+	// Escrita do arquivo baseado no site DevMedia : https://www.devmedia.com.br/criando-e-gravando-dados-em-txt-com-java/23060
+	private static void escreverArquivo(List<String> linhas, String arquivoEscrita) throws IOException {
 		FileWriter file = null;
-		String arquivoEscrita = "base-de-dados.pl";
 		file = new FileWriter(arquivoEscrita, true);
 
-		BufferedWriter fw = new BufferedWriter(file);
+		BufferedWriter bw = new BufferedWriter(file);
 		linhas.forEach(linha ->
 		{
 			try {
-				fw.append("\n");
-				fw.append(linha);
+				bw.append("\n");
+				bw.append(linha);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		});
-		fw.close();
+		bw.close();
 	}
+
+	//Leitura do arquivo XLS usando a biblioteca do Apache POI para leitura de arquivos
 	private static List<String> lerArquivo(String caminho){
 		List<String> linhas = new ArrayList<>();
 		FileInputStream fileInputStream = null;
@@ -88,33 +110,26 @@ public class TrabalhoParadigmasApplication {
 		}
 	}
 
-	private static void consultar(String consulta){
-
-		String arquivoProlog = "base-de-dados.pl";
+	//Seguindo o exemplo do Youtube, para uso da biblioteca Jpl7
+	private static void consultar(String consulta, String arquivoProlog){
 		Query q = new Query("consult('" + arquivoProlog + "')");
 		q.hasSolution();
 		q = new Query(consulta);
 
 		List<String> result = new ArrayList<>();
 		Map<String, Term>[] solutions = q.allSolutions();
-		if(solutions.length == 0){
-			result.clear();
-			result.add("False");
-		}
 		for(int i = 0; i < solutions.length; i++) {
-
-			if(!(solutions[i].isEmpty() || solutions.length == 0)) {
+			if(!(solutions[i].isEmpty())) {
 				result.add(solutions[i].toString());
 			} else if (solutions[i].toString().contains("{}")) {
 				result.clear();
 				result.add("True");
 			}
-			else{
-				result.add(solutions[i].toString());
-			}
 		}
 
 		System.out.println(result);
-
+		Scanner ler = new Scanner(System.in);
+		System.out.println("Digite Enter para continuar");
+		ler.nextLine();
 	}
 }
