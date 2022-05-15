@@ -74,7 +74,6 @@ public class TrabalhoParadigmasApplication {
 	private static List<String> lerArquivo(String caminho){
 		List<String> linhas = new ArrayList<>();
 		FileInputStream fileInputStream = null;
-		GastoObraDTO gastoObraDTO = new GastoObraDTO();
 		try {
 			File file = new File(caminho);
 			fileInputStream = new FileInputStream(file);
