@@ -52,7 +52,7 @@ public class TrabalhoParadigmasApplication {
 		}
 	}
 
-	// Escrita do arquivo baseado no site DevMedia : https://www.devmedia.com.br/criando-e-gravando-dados-em-txt-com-java/23060
+	// Escrita do arquivo baseado no site DevMedia : https://www.devmedia.com.br/leitura-e-escrita-de-arquivos-de-texto-em-java/25529
 	private static void escreverArquivo(List<String> linhas, String arquivoEscrita) throws IOException {
 		FileWriter file = null;
 		file = new FileWriter(arquivoEscrita, true);
