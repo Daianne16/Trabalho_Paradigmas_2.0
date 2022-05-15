@@ -79,7 +79,7 @@ public class TrabalhoParadigmasApplication {
 			fileInputStream = new FileInputStream(file);
 
 			XSSFWorkbook xssfWorkbook = new XSSFWorkbook(fileInputStream);
-			XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
+			XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0); // getSheetAt escolhe a aba desejada para a leitura (nesse caso a primeira)
 			Iterator<Row> iterator = xssfSheet.iterator();
 
 			while(iterator.hasNext()){
