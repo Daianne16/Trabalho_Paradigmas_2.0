@@ -14,6 +14,8 @@ valor_total(X, Res) :- findall(Val, gasto(_,X,_,_,_,_,Val), Valores), somaLista(
 
 %Quarta regra
 comprado_em(D,X) :- findall([Prod, Loja, Qtd] , gasto(D,Prod,Loja,Qtd,_,_,_) , X).
+%Versão 2
+p_comprado_em(D,X) :- findall(Prod , gasto(D,Prod,_,_,_,_,_) , X).
 
 %Quinta regra
 total_compras(X, Res) :- findall(Val, gasto(_,_,X,_,_,_,Val), Valores), somaLista(Valores, Res).
@@ -23,6 +25,5 @@ total_compras(X, Res) :- findall(Val, gasto(_,_,X,_,_,_,Val), Valores), somaList
 pega_qtds([], []) .
 pega_qtds([H|T], Res) :- pega_qtds(T,Prov), findall(Qtd, gasto(_,H,_,Qtd,_,_,_), Produtos), somaLista(Produtos, QtdTotal),  Res = [[H,QtdTotal]|Prov].
 %Faz a comparação do maior
-acha_maior([[H|Qtd]|T], Maior) :- acha_maior(T, [P|MaiorQtd]), pegar_elemento(MaiorQtd, M), pegar_elemento(Qtd, Q), (M<Q)->Maior=[H|Qtd]; Maior =[P|MaiorQtd] .
 produto_mais_comprado(X) :- findall(Prod, gasto(_,Prod,_,_,_,_,_), Produtos), sort(Produtos, ListaParaSoma), pega_qtds(ListaParaSoma, X).
 
